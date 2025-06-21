@@ -1,0 +1,130 @@
+:root {
+  --pounamu-green: #2E8B57;
+  --kowhai-yellow: #FFC107;
+  --hangi-brown: #8B4513;
+  --moana-blue: #4682B4;
+  --white: #FFFFFF;
+  --black: #000000;
+}
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+  background-color: #F7FAFC;
+  color: #2D3748;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--white);
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  z-index: 1;
+}
+
+.hero-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-section h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-section p {
+  font-size: 1.5rem;
+}
+
+.btn-primary {
+  background-color: var(--kowhai-yellow);
+  border-color: var(--kowhai-yellow);
+  color: var(--black);
+}
+
+.btn-primary:hover {
+  background-color: var(--pounamu-green);
+  border-color: var(--pounamu-green);
+  color: var(--white);
+}
+
+/* Section Divider with Kowhaiwhai-inspired Border */
+.section-divider {
+  border-top: 4px solid var(--pounamu-green); /* Fallback until PNG is added */
+  border-image: url('./pictures/kowhaiwhai.png') 30 stretch; 
+  border-image-slice: 30; 
+  border-image-repeat: repeat;
+  margin: 2rem 0;
+}
+
+/* Services Section - Updated Card Styles */
+.card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  min-height: 400px; /* Increased height for taller cards */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-body {
+  padding: 2rem; /* Increased padding for vertical space */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+}
+
+.card-title {
+  color: var(--pounamu-green);
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  flex-grow: 1; /* Allow text to expand */
+}
+
+/* About Section */
+.bg-dark {
+  background-color: var(--black) !important;
+}
+
+/* Contact Section */
+.form-label {
+  color: var(--hangi-brown);
+}
+
+.form-control:focus {
+  border-color: var(--moana-blue);
+  box-shadow: 0 0 0 0.2rem rgba(70, 130, 180, 0.25);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .card {
+    min-height: 350px; /* Slightly shorter on mobile */
+  }
+  .card-body {
+    padding: 1.5rem;
+  }
+}
