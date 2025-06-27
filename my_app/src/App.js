@@ -1,89 +1,107 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from 'react';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './App.css';
-import axios from 'axios';
-import './App.css';
-import './components/ContactSection';
+import "react-datepicker/dist/react-datepicker.css";
+import { useState, useEffect } from 'react';
+import AdvisorList from './components/AdvisorList';
+import AdvisorSection from './components/AdvisorSection';
+import ContactForm from './ContactSection';
+import HeroSection from './components/HeroSection';
+import ServiceSection from './components/ServiceSection';
 
 function App() {
-  return (
-    <div className="App">
-      {/* Navigation Bar */}
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div className="container">
-          <a className="navbar-brand" href="#">Tūhono Tech</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item"><a className="nav-link" href="#home">Kāinga</a></li>
-              <li className="nav-item"><a className="nav-link" href="#services">Ratonga</a></li>
-              <li className="nav-item"><a className="nav-link" href="#about">Mō Mātou</a></li>
-              <li className="nav-item"><a className="nav-link" href="#contact">Whakapā</a></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+        const [isDarkMode, setIsDarkMode] = useState(false);
+        const [isMenuOpen, setIsMenuOpen] = useState(false);
+        const [selectedLanguage, setSelectedLanguage] = useState('en');
+
+        // Check for dark mode preference from localStorage on initial load
+        useEffect(() => {
+          const savedDarkMode = localStorage.getItem('dark-mode') === 'enabled';
+          setIsDarkMode(savedDarkMode);
+          if (savedDarkMode) {
+            document.body.classList.add('dark-mode');
+          }
+        }, []);
+
+        // Toggle dark mode
+        const toggleDarkMode = () => {
+          setIsDarkMode(!isDarkMode);
+          document.body.classList.toggle('dark-mode');
+          localStorage.setItem('dark-mode', !isDarkMode ? 'enabled' : 'disabled');
+        };
+
+        // Toggle mobile menu
+        const toggleMenu = () => {
+          setIsMenuOpen(!isMenuOpen);
+        };
+
+        const handleLanguageChange = (event) => {
+        setSelectedLanguage(event.target.value);
+    // In a real-world app, you would also update your app's language setting here
+      };
+
+        return (
+          <div className="App">
+            {/* Navigation Bar */}
+            <nav className="navbar">
+              <div className="container">
+                <a href="#" className="logo">
+                  <img src="logo.png" alt="WhānauTech Logo" />
+                </a>
+                <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+                  <li><a href="#home"><i className="fas fa-home"></i> Home</a></li>
+                  <li><a href="#services"><i className="fas fa-cogs"></i> Services</a></li>
+                  <li><a href="#about"><i className="fas fa-info-circle"></i> About</a></li>
+                  <li><a href="#contact"><i className="fas fa-envelope"></i> Contact</a></li>
+                </ul>
+                <div className="menu-toggle" onClick={toggleMenu}>
+                  <i className="fas fa-bars"></i>
+                </div>
+
+                {/* Language Dropdown */}
+                <div className="language-dropdown">
+                  <select onChange={handleLanguageChange} value={selectedLanguage} className="language-select">
+                    <option value="en">English</option>
+                    <option value="mi">Te Reo Māori</option>
+                    {/* Add more languages here */}
+                  </select>
+                </div>
+
+                {/* Login and Signup Buttons */}
+                <div className="auth-buttons">
+                  <button className="btn btn-outline-light me-2">Login</button>
+                  <button className="btn btn-primary">Sign Up</button>
+                </div>
+
+
+                {/* Dark Mode Toggle */}
+                <div className="dark-mode-toggle" onClick={toggleDarkMode}>
+                  <i className={isDarkMode ? "fas fa-moon" : "fas fa-sun"}></i>
+                </div>
+              </div>
+            </nav>
 
       {/* Hero Section */}
-      <section id="home" className="hero-section d-flex align-items-center text-center text-white" style={{ background: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80")', backgroundSize: 'cover', minHeight: '100vh' }}>
-        <div className="container">
-          <h1 className="display-4">Tūhono ki te Ao Hangarau</h1>
-          <p className="lead">Empowering Māori communities through technology consultation and education.</p>
-          <a href="#contact" className="btn btn-primary btn-lg mt-3">Whakapā Mai</a>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* Services Section */}
-      <section id="services" className="py-5" style={{ backgroundColor: '#F5F5F5' }}>
-        <div className="container">
-          <h2 className="text-center mb-5">Ō Mātou Ratonga</h2>
-          <div className="section-divider"></div>
-          <div className="row">
-            <div className="col-md-4 mb-4">
-              <div className="card h-100 text-center">
-                <div className="card-body">
-                  <i className="fas fa-laptop-code fa-2x mb-3" style={{ color: 'var(--pounamu-green)' }}></i>
-                  <h5 className="card-title">Technology Consultation</h5>
-                  <p className="card-text">
-                    Tailored advice to help Māori businesses leverage technology for growth and innovation, fostering digital empowerment across Aotearoa.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 mb-4">
-              <div className="card h-100 text-center">
-                <div className="card-body">
-                  <i className="fas fa-chalkboard-teacher fa-2x mb-3" style={{ color: 'var(--pounamu-green)' }}></i>
-                  <h5 className="card-title">Digital Education</h5>
-                  <p className="card-text">
-                    Workshops and training to build tech skills in our communities, bridging the digital divide with hands-on learning opportunities.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 mb-4">
-              <div className="card h-100 text-center">
-                <div className="card-body">
-                  <i className="fas fa-tools fa-2x mb-3" style={{ color: 'var(--pounamu-green)' }}></i>
-                  <h5 className="card-title">IT Support</h5>
-                  <p className="card-text">
-                    Reliable support to keep your systems running smoothly, ensuring your business stays connected and operational.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ServiceSection />
+
+      {/* Advisor List Section */}
+      <AdvisorList />
+
+      {/* Advisor Section */}
+      <AdvisorSection/>
+
 
       {/* About Section */}
       <section id="about" className="py-5 bg-dark text-white">
         <div className="container">
           <h2 className="text-center mb-5">Mō Mātou</h2>
           <div className="section-divider"></div>
-          <p className="lead text-center">We are committed to empowering Māori individuals and businesses through technology, guided by the values of manaakitanga, whanaungatanga, and kaitiakitanga. Our mission is to bridge the digital divide and foster innovation in Aotearoa.</p>
+          <p className="lead text-center">
+            We are committed to empowering Māori individuals and businesses through technology, guided by the values of manaakitanga, whanaungatanga, and kaitiakitanga. Our mission is to bridge the digital divide and foster innovation in Aotearoa.
+          </p>
         </div>
       </section>
 
@@ -92,38 +110,15 @@ function App() {
         <div className="container">
           <h2 className="text-center mb-5">Whakapā Mai</h2>
           <div className="section-divider"></div>
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-              <div className="card">
-                <div className="card-body">
-                  <form>
-                    <div className="mb-3">
-                      <label htmlFor="name" className="form-label">Ingoa (Name)</label>
-                      <input type="text" className="form-control" id="name" placeholder="Enter your name" />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="email" className="form-label">Īmēra (Email)</label>
-                      <input type="email" className="form-control" id="email" placeholder="Enter your email" />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="message" className="form-label">Kōrero (Message)</label>
-                      <textarea className="form-control" id="message" rows="5" placeholder="Your message"></textarea>
-                    </div>
-                    <button type="submit" className="btn btn-primary w-100">Tukuna (Send)</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ContactForm />
         </div>
       </section>
 
       {/* Footer */}
       <footer className="bg-dark text-white text-center py-3">
-        <p>&copy; 2025 Tūhono Tech. Aroha mai, aroha atu.</p>
+        <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
       </footer>
     </div>
   );
 }
-
 export default App;

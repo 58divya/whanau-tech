@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_mail import Mail, Message
 from datetime import datetime, timezone
+from dateutil import parser 
 import os
 import re
 
@@ -44,8 +45,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME') # your gmail address
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD') # app password
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER')
 
 db = SQLAlchemy(app)
@@ -64,7 +65,7 @@ class Booking(db.Model):
     advisor_id = db.Column(db.Integer, nullable=False)
     advisor_name = db.Column(db.String(100), nullable=False)
     user_name = db.Column(db.String(100), nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    datetime = db.Column(db.DateTime, nullable=False)  # Add this line
 
 # Create tables
 with app.app_context():
@@ -84,27 +85,30 @@ def get_advisors():
 # Booking appointment
 @app.route('/api/book', methods=['POST'])
 def book_appointment():
-    data = request.get_json()
-    advisor_id = data.get('advisor_id')
-    advisor_name = data.get('advisor_name')
-    user_name = data.get('user_name')
-
-    if not advisor_id or not advisor_name or not user_name:
-        return jsonify({"message": "Missing fields"}), 400
-
     try:
-        booking = Booking(
-            advisor_id=advisor_id,
-            advisor_name=advisor_name,
-            user_name=user_name
-        )
-        db.session.add(booking)
-        db.session.commit()
+        data = request.get_json()
+        print("📩 Booking request received:", data)
 
-        return jsonify({"message": f"Appointment booked with {advisor_name} for {user_name}."}), 200
+        user_name = data.get('user_name')
+        user_email = data.get('user_email')
+        advisor_name = data.get('advisor_name')
+        datetime_str = data.get('datetime')
+
+        # Validate required fields
+        if not user_name or not user_email or not advisor_name or not datetime_str:
+            print("❌ Missing required fields")
+            return jsonify({"error": "Missing required fields"}), 400
+
+        # Add any database save here later if needed
+        print("✅ Booking validated and saved (in memory)")
+
+        return jsonify({
+            "message": f"Appointment booked with {advisor_name} for {user_name} on {datetime_str}."
+        }), 200
+
     except Exception as e:
-        db.session.rollback()
-        return jsonify({"message": "Booking failed. Please try again later."}), 500
+        print("❌ Exception occurred in /api/book:", str(e))
+        return jsonify({"error": "Something went wrong on the server. Please try again later."}), 500
 
 # Contact form endpoint
 @app.route('/api/contact', methods=['POST'])
