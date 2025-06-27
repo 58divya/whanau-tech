@@ -45,9 +45,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME') # your gmail address
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD') # app password
-app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER')
+app.config['MAIL_USERNAME'] = 'your-real-gmail@gmail.com' # your gmail address
+app.config['MAIL_PASSWORD'] = 'your-16-char-app-password' # app password
+app.config['MAIL_DEFAULT_SENDER'] = 'your-real-gmail@gmail.com'
 
 db = SQLAlchemy(app)
 mail = Mail(app)
@@ -65,7 +65,8 @@ class Booking(db.Model):
     advisor_id = db.Column(db.Integer, nullable=False)
     advisor_name = db.Column(db.String(100), nullable=False)
     user_name = db.Column(db.String(100), nullable=False)
-    datetime = db.Column(db.DateTime, nullable=False)  # Add this line
+    user_email = db.Column(db.String(120), nullable=False)  # ← THIS!
+    datetime = db.Column(db.DateTime, nullable=False)
 
 # Create tables
 with app.app_context():
@@ -85,30 +86,62 @@ def get_advisors():
 # Booking appointment
 @app.route('/api/book', methods=['POST'])
 def book_appointment():
+    data = request.get_json()
+    advisor_id = data.get('advisor_id')
+    advisor_name = data.get('advisor_name')
+    user_name = data.get('user_name')
+    user_email = data.get('user_email')
+    dt_str = data.get('datetime')
+
+    print(f"📩 Booking request received: {data}")
+
+    if not advisor_id or not advisor_name or not user_name or not user_email or not dt_str:
+        return jsonify({"error": "Missing required fields"}), 400
+
     try:
-        data = request.get_json()
-        print("📩 Booking request received:", data)
-
-        user_name = data.get('user_name')
-        user_email = data.get('user_email')
-        advisor_name = data.get('advisor_name')
-        datetime_str = data.get('datetime')
-
-        # Validate required fields
-        if not user_name or not user_email or not advisor_name or not datetime_str:
-            print("❌ Missing required fields")
-            return jsonify({"error": "Missing required fields"}), 400
-
-        # Add any database save here later if needed
-        print("✅ Booking validated and saved (in memory)")
-
-        return jsonify({
-            "message": f"Appointment booked with {advisor_name} for {user_name} on {datetime_str}."
-        }), 200
-
+        dt = parser.parse(dt_str)
+        new_booking = Booking(
+            advisor_id=advisor_id,
+            advisor_name=advisor_name,
+            user_name=user_name,
+            user_email=user_email,
+            datetime=dt
+        )
+        db.session.add(new_booking)
+        db.session.commit()
+        print(f"✅ Booking saved: {data}")
     except Exception as e:
-        print("❌ Exception occurred in /api/book:", str(e))
-        return jsonify({"error": "Something went wrong on the server. Please try again later."}), 500
+        print(f"❌ DB Error: {e}")
+        db.session.rollback()
+        return jsonify({"error": "Database error. Please try again later."}), 500
+
+    # ✅ Send email confirmation to the user
+    try:
+        msg = Message(
+            subject='WhānauTech Appointment Confirmation',
+            recipients=[user_email],
+            body=f"""
+Kia ora {user_name},
+
+Thank you for booking a tech consultation with WhānauTech.
+
+📅 Appointment Details:
+Advisor: {advisor_name}
+Date & Time: {dt.strftime('%A %d %B %Y at %I:%M %p')}
+
+If you have any questions, feel free to reply to this email.
+
+Ngā mihi nui,  
+The WhānauTech Team
+"""
+        )
+        mail.send(msg)
+        print("✅ Confirmation email sent.")
+    except Exception as e:
+        print(f"❌ Failed to send email: {str(e)}")
+
+    return jsonify({"message": f"Appointment booked with {advisor_name} for {user_name}."}), 200
+
 
 # Contact form endpoint
 @app.route('/api/contact', methods=['POST'])
