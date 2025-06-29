@@ -8,6 +8,10 @@ import AdvisorSection from './components/AdvisorSection';
 import ContactForm from './ContactSection';
 import HeroSection from './components/HeroSection';
 import ServiceSection from './components/ServiceSection';
+import Chatbot from './components/Chatbot';
+import AboutSection from './components/AboutSection';
+import Login from './components/Login';
+import Register from './components/Register';
 
 function App() {
         const [isDarkMode, setIsDarkMode] = useState(false);
@@ -84,6 +88,12 @@ function App() {
       {/* Hero Section */}
       <HeroSection />
 
+      {/* Login Section */}
+      <Login />
+
+      {/* Register Section */}
+      <Register />
+
       {/* Services Section */}
       <ServiceSection />
 
@@ -93,17 +103,11 @@ function App() {
       {/* Advisor Section */}
       <AdvisorSection/>
 
+   {/* Chatbot Section */}      
+      <Chatbot />
 
       {/* About Section */}
-      <section id="about" className="py-5 bg-dark text-white">
-        <div className="container">
-          <h2 className="text-center mb-5">Mō Mātou</h2>
-          <div className="section-divider"></div>
-          <p className="lead text-center">
-            We are committed to empowering Māori individuals and businesses through technology, guided by the values of manaakitanga, whanaungatanga, and kaitiakitanga. Our mission is to bridge the digital divide and foster innovation in Aotearoa.
-          </p>
-        </div>
-      </section>
+      <AboutSection/>
 
       {/* Contact Section */}
       <section id="contact" className="py-5">
