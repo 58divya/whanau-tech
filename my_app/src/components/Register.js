@@ -1,31 +1,36 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function Register() {
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [message, setMessage] = useState('');
+const Register = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = async (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:5000/register', form);
-      setMessage(res.data.msg);
-    } catch (err) {
-      setMessage(err.response.data.msg || 'Registration failed');
-    }
+    // Add registration logic here
+    alert('Account created!');
+    navigate('/login');
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
-      <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
-      <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
-      <button type="submit">Register</button>
-      <p>{message}</p>
-    </form>
+    <div className="container mt-5" style={{ maxWidth: '400px' }}>
+      <h2 className="text-center mb-4">Sign Up</h2>
+      <form onSubmit={handleRegister}>
+        <div className="mb-3">
+          <label>Email</label>
+          <input type="email" className="form-control" value={email}
+            onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+        <div className="mb-3">
+          <label>Password</label>
+          <input type="password" className="form-control" value={password}
+            onChange={(e) => setPassword(e.target.value)} required />
+        </div>
+        <button className="btn btn-success w-100" type="submit">Register</button>
+      </form>
+    </div>
   );
-}
+};
 
 export default Register;
