@@ -16,7 +16,7 @@
 .navbar {
   position: sticky;
   top: 0;
-  background-color: var(--black);
+  background-color: var(--white);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -39,7 +39,7 @@
 }
 
 .navbar .nav-links li a {
-  color: var(--white);
+  color: var(--black);
   text-decoration: none;
   font-weight: 600;
   font-size: 1.1rem;
@@ -69,8 +69,8 @@
 /* New Dropdown for Language Selector */
 .language-dropdown select {
   background-color: transparent;
-  border: 1px solid var(--white);
-  color: var(--white);
+  border: 1px solid var(--black);
+  color: var(--black);
   font-weight: 600;
   font-size: 1rem;
   border-radius: var(--border-radius);
@@ -97,13 +97,14 @@
 
 .auth-buttons .btn-outline-light {
   color: var(--white);
-  border-color: var(--white);
+  background-color: #1e97ee;
+  width: 100px 200px;
 }
 
 .dark-mode-toggle {
   cursor: pointer;
   font-size: 1.5rem;
-  color: var(--white);
+  color: var(--black);
 }
 
 /* Mobile Styles */
@@ -156,8 +157,8 @@ body.dark-mode .dark-mode-toggle i {
 /* -----------Hero section------------ */
 .hero-section {
   position: relative;
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+  background-image:  url('./pictures/tech_bg.jpg');
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -189,9 +190,8 @@ body.dark-mode .dark-mode-toggle i {
 }
 
 .hero-section .btn-primary {
-  background-color: var(--kowhai-yellow);
-  border-color: var(--kowhai-yellow);
-  color: var(--black);
+  background-color: var(rgb(243, 243, 243));
+  color: var(--white);
   padding: 1rem 2.5rem;
   font-weight: 600;
   border-radius: var(--border-radius);
@@ -344,7 +344,7 @@ footer {
   }
 
   .card-body {
-    padding: 1.5rem;
+    padding: 2.5rem;
   }
 }
 
