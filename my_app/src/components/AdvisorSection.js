@@ -9,6 +9,28 @@ function AdvisorSection() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [bookedTimes, setBookedTimes] = useState([]);
+
+// For booked slots 
+  useEffect(() => {
+  if (!selectedAdvisor || !selectedDate) {
+    setBookedTimes([]);
+    return;
+  }
+
+  const dateStr = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD
+
+  fetch(`http://localhost:5001/api/booked_slots?date=${dateStr}&advisor_id=${selectedAdvisor.id}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.booked_times) {
+        setBookedTimes(data.booked_times);
+      } else {
+        setBookedTimes([]);
+      }
+    })
+    .catch(() => setBookedTimes([]));
+}, [selectedAdvisor, selectedDate]);
 
   useEffect(() => {
     axios.get('http://localhost:5001/api/advisors')
@@ -43,6 +65,12 @@ function AdvisorSection() {
   } else {
     alert("Please provide both name and email.");
   }
+};
+
+const filterPassedTime = (time) => {
+  // Format time as 'HH:mm'
+  const timeStr = time.toTimeString().slice(0, 5);
+  return !bookedTimes.includes(timeStr);
 };
 
   return (
@@ -103,6 +131,7 @@ function AdvisorSection() {
               timeCaption="Time"
               dateFormat="MMMM d, yyyy h:mm aa"
               className="form-control mb-2"
+              filterTime={filterPassedTime}
             />
 
             <button
