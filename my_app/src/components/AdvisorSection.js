@@ -20,7 +20,7 @@ function AdvisorSection() {
 
   const dateStr = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD
 
-  fetch(`http://localhost:5001/api/booked_slots?date=${dateStr}&advisor_id=${selectedAdvisor.id}`)
+  fetch(`http://localhost:5000/api/booked_slots?date=${dateStr}&advisor_id=${selectedAdvisor.id}`)
     .then(res => res.json())
     .then(data => {
       if (data.booked_times) {
@@ -33,14 +33,14 @@ function AdvisorSection() {
 }, [selectedAdvisor, selectedDate]);
 
   useEffect(() => {
-    axios.get('http://localhost:5001/api/advisors')
+    axios.get('http://localhost:5000/api/advisors')
       .then(res => setAdvisors(res.data))
       .catch(err => console.error(err));
   }, []);
 
   const handleBook = (advisor) => {
   if (userName && userEmail) {
-    fetch('http://localhost:5001/api/book', {
+    fetch('http://localhost:5000/api/book', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
