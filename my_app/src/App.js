@@ -13,9 +13,10 @@ import HeroSection from './components/HeroSection';
 import ServiceSection from './components/ServiceSection';
 import Chatbot from './components/Chatbot';
 import AboutSection from './components/AboutSection';
-
 import Login from './components/Login';
 import Register from './components/Register';
+import ForgotPassword from './components/ForgotPassword';
+
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -110,6 +111,7 @@ function App() {
           {/* Login and Register Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
       </div>
     </Router>
