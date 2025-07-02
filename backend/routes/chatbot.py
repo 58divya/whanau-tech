@@ -1,34 +1,39 @@
-# from flask import Blueprint, request, jsonify
-# from openai import OpenAI
-# import os
+from flask import Flask, request, jsonify
+from transformers import T5Tokenizer, T5ForConditionalGeneration
+import torch
 
-# chatbot_bp = Blueprint('chatbot', __name__, url_prefix='/api')
+# Initialize Flask app
+app = Flask(__name__)
 
-# client = OpenAI()
+# Load your fine-tuned model and tokenizer
+model_path = "./chatbot-t5"  # Replace with the correct path if needed
+tokenizer = T5Tokenizer.from_pretrained(model_path)
+model = T5ForConditionalGeneration.from_pretrained(model_path)
 
-# @chatbot_bp.route('/chat', methods=['POST'])
-# def chat():
-#     try:
-#         data = request.get_json()
-#         user_message = data.get('message', '').strip()
-#         if not user_message:
-#             return jsonify({'error': 'No message provided'}), 400
+# Device setup (optional - for faster inference with GPU)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
 
-#         response = client.chat.completions.create(
-#             model="gpt-4o",
-#             messages=[
-#                 {"role": "system", "content": (
-#                     "You are Matua Tohu, a respectful and caring Māori tech advisor from WhānauTech. "
-#                     "You greet users in te reo Māori, explain things patiently, and always guide whānau "
-#                     "in a culturally appropriate and warm manner. Use gentle language. Prioritise helping Māori whānau understand technology. "
-#                     "Avoid slang. Finish with 'Ngā mihi' or similar."
-#                 )},
-#                 {"role": "user", "content": user_message}
-#             ],
-#             max_tokens=200
-#         )
-#         reply_text = response.choices[0].message.content.strip()
-#         return jsonify({'reply': reply_text})
-#     except Exception as e:
-#         print("❌ Chat error:", e)
-#         return jsonify({'error': 'Sorry, I had trouble responding.'}), 500
+@app.route("/api/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    message = data.get("message", "")
+
+    if not message.strip():
+        return jsonify({"reply": "Please type a question."})
+
+    input_text = "question: " + message
+    input_ids = tokenizer.encode(input_text, return_tensors="pt", truncation=True, max_length=128).to(device)
+
+    output_ids = model.generate(
+        input_ids,
+        max_length=128,
+        num_beams=4,
+        early_stopping=True
+    )
+    reply = tokenizer.decode(output_ids[0], skip_special_tokens=True)
+
+    return jsonify({"reply": reply})
+
+if __name__ == "__main__":
+    app.run(debug=True, host="127.0.0.1", port=5000)
