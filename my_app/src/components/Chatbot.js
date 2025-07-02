@@ -17,7 +17,7 @@ function Chatbot() {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5001/api/chat', {
+      const res = await fetch('http://localhost:5000/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: input })
@@ -88,7 +88,6 @@ function Chatbot() {
             textAlign: 'center',
             borderTopLeftRadius: '10px',
             borderTopRightRadius: '10px',
-            backgroundImage: 'url("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Koru.svg/240px-Koru.svg.png")',
             backgroundSize: '40px',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: '10px center',
