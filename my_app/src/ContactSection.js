@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './App.css';
 
 function ContactForm() {
@@ -7,6 +8,8 @@ function ContactForm() {
     email: '',
     message: ''
   });
+
+  const navigate = useNavigate(); // Hook to programmatically navigate
 
   const [status, setStatus] = useState({ message: '', type: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,7 +23,7 @@ function ContactForm() {
     e.preventDefault();
     setIsSubmitting(true);
     setStatus({ message: '', type: '' });
-
+    
     console.log('Form data:', formData);
     console.log('API URL:', process.env.REACT_APP_API_URL || 'Not defined');
 
@@ -35,23 +38,26 @@ function ContactForm() {
         body: JSON.stringify(formData),
       });
 
-      console.log('Response status:', response.status);
-      const data = await response.json();
-      console.log('Response data:', data);
+    console.log('Response status:', response.status);
+    const data = await response.json();
+    console.log('Response data:', data);
 
-      if (response.ok) {
-        setStatus({ message: data.message, type: 'success' });
-        setFormData({ name: '', email: '', message: '' });
-      } else {
-        setStatus({ message: data.error || 'Kaore i tukuna te puka. Whakamātau anō.', type: 'error' });
-      }
-    } catch (error) {
-      console.error('Fetch error:', error.message);
-      setStatus({ message: `Pānga hononga: ${error.message}. Whakamātau anō.`, type: 'error' });
-    } finally {
-      setIsSubmitting(false);
+    if (response.ok) {
+      setStatus({ message: data.message, type: 'success' });
+      setFormData({ name: '', email: '', message: '' });
+
+      // Redirect to the login page after successful form submission
+      navigate('/login');
+    } else {
+      setStatus({ message: data.error || 'Kaore i tukuna te puka. Whakamātau anō.', type: 'error' });
     }
-  };
+  } catch (error) {
+    console.error('Fetch error:', error.message);
+    setStatus({ message: `Pānga hononga: ${error.message}. Whakamātau anō.`, type: 'error' });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div className="row justify-content-center">
@@ -98,8 +104,8 @@ function ContactForm() {
                   aria-required="true"
                 />
               </div>
-              <button type="submit" className="btn btn-primary w-100">
-                Tukuna (Send)
+              <button type="submit" className="btn btn-primary w-100" disabled={isSubmitting}>
+                {isSubmitting ? 'Sending...' : 'Tukuna (Send)'}
               </button>
             </form>
             {status.message && (
