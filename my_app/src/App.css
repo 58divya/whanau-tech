@@ -109,15 +109,23 @@
 
 /* Mobile Styles */
 @media (max-width: 768px) {
+  /* Stack Navbar items vertically */
+  .navbar {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
   .navbar .nav-links {
-    display: none;
+    display: none; /* Hidden by default */
     position: absolute;
-    top: 70px;
+    top: 80px; /* Adjusted for better visibility */
     right: 20px;
-    background-color: var(--black);
+    background-color: var(--white);
     flex-direction: column;
     padding: 1rem 2rem;
     border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%; /* Ensure full width */
   }
 
   .navbar .nav-links li {
@@ -127,6 +135,7 @@
   .navbar .nav-links.active {
     display: flex;
   }
+
 
   .menu-toggle {
     display: block;
