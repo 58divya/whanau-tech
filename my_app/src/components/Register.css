@@ -1,0 +1,54 @@
+.register-card {
+  max-width: 500px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 12px;
+  background-color: var(--bg-card);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.register-card input {
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+
+.dark-mode .register-card {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.dark-mode .register-card input {
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+}
+
+input.form-control {
+  padding-right: 40px;
+}
+
+.card input,
+.card .PhoneInputInput {
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+input.form-control.pe-5 {
+  padding-right: 2.5rem !important; /* ensures space for the icon */
+}
+
+.fa-eye, .fa-eye-slash {
+  font-size: 1rem;
+}
