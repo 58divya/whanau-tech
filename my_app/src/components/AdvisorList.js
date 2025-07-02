@@ -6,7 +6,7 @@ function AdvisorList() {
   const [advisors, setAdvisors] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5001/api/advisors')
+    axios.get('http://localhost:5000/api/advisors')
       .then(res => setAdvisors(res.data))
       .catch(err => console.error(err));
   }, []);
