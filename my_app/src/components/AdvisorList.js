@@ -1,13 +1,13 @@
-// src/components/AdvisorSection.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // ✅ Add this
 import translations from "./translations";
-import './AdvisorList.css';
+import "./AdvisorList.css";
 
-function AdvisorSection({ selectedLanguage }) {
+function AdvisorList({ selectedLanguage }) {
   const [advisors, setAdvisors] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const t = translations[selectedLanguage]?.advisors || translations.en.advisors;
+  const navigate = useNavigate(); // ✅ Hook for navigation
 
   useEffect(() => {
     axios.get('http://127.0.0.1:5000/api/advisors')
@@ -15,72 +15,53 @@ function AdvisorSection({ selectedLanguage }) {
       .catch(err => console.error("Error fetching advisors:", err));
   }, []);
 
-  useEffect(() => {
-    if (advisors.length === 0) return;
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % advisors.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [advisors]);
-
-  const advisor = advisors[currentIndex];
-
-  const goPrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + advisors.length) % advisors.length);
-  };
-
-  const goNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % advisors.length);
-  };
-
   return (
-   <section id="advisor-stories" className="advisor-carousel-section py-5" style={{ backgroundColor: "#e6f2ff" }}>
+    <section id="advisor-section" className="advisor-section position-relative py-5" style={{ backgroundColor: '#e6f2ff' }}>
+      
+      <div className="slant-divider-top">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+          <polygon fill="#e6f2ff" points="0,100 100,0 100,100" />
+        </svg>
+      </div>
+
       <div className="container">
-        <h2 className="mb-5" style={{ color: "#004466", textAlign: "center" }}>{t.title}</h2>
+        <h2 className="mb-5" style={{ color: '#004466', textAlign: 'center' }}>{t.title}</h2>
 
-        {advisor ? (
-          <div className="advisor-carousel d-flex align-items-center justify-content-center">
-            <div className="advisor-text col-md-6">
-              <h3>{advisor.name}</h3>
-              <p className="advisor-expertise">{advisor.expertise}</p>
-              {/* Optional: Add a testimonial or quote here */}
+        <div className="row justify-content-center g-4">
+          {advisors.map((advisor, idx) => (
+            <div key={advisor.id || idx} className="col-12 col-md-6 col-lg-4 d-flex justify-content-center">
+              <div className="advisor-card text-center">
+                <div className="blob-wrapper mb-3">
+                  <img
+                    src={advisor.photo_url.startsWith('http')
+                      ? advisor.photo_url
+                      : `http://127.0.0.1:5000${advisor.photo_url}`}
+                    alt={advisor.name}
+                    className="blob-image"
+                  />
+                </div>
+                <h3 className="advisor-name" style={{ color: '#004466' }}>{advisor.name}</h3>
+                <p className="advisor-expertise" style={{ fontSize: '0.9rem', color: '#555' }}>{advisor.expertise}</p> {/* ✅ Expertise */}
+                <button
+                  className="btn btn-primary mt-2"
+                  onClick={() => navigate(`/advisor/${advisor.id}`)} // ✅ Navigate to detail page
+                >
+                  More Info
+                </button>
+              </div>
             </div>
-
-            <div className="advisor-image col-md-6 d-flex justify-content-center">
-              <img
-                src={advisor.photo_url}
-                alt={advisor.name}
-                className="rounded advisor-photo shadow"
-              />
-            </div>
-          </div>
-        ) : (
-          <p className="text-center">{t.noAdvisors}</p>
-        )}
-
-        {/* Navigation Arrows */}
-        <div className="advisor-carousel-nav mt-4 d-flex justify-content-center gap-4">
-          <button onClick={goPrev} aria-label="Previous advisor" className="nav-button">&larr;</button>
-          <button onClick={goNext} aria-label="Next advisor" className="nav-button">&rarr;</button>
-        </div>
-
-        {/* Dots */}
-        <div className="advisor-carousel-dots mt-3 d-flex justify-content-center gap-2">
-          {advisors.map((_, idx) => (
-            <span
-              key={idx}
-              className={`dot ${idx === currentIndex ? "active" : ""}`}
-              onClick={() => setCurrentIndex(idx)}
-              aria-label={`Go to advisor ${idx + 1}`}
-              role="button"
-              tabIndex={0}
-              onKeyDown={e => { if (e.key === "Enter") setCurrentIndex(idx); }}
-            />
           ))}
         </div>
       </div>
+
+      <div className="slant-divider-bottom">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+          <polygon fill="#e6f2ff" points="0,0 100,100 0,100" />
+        </svg>
+      </div>
+
     </section>
   );
 }
 
-export default AdvisorSection;
+export default AdvisorList;
