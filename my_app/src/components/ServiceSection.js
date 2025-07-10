@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import translations from './translations'; // Adjust if needed
 import '../App.css';
+import './Service.css';
 
 const ServicesSection = ({ selectedLanguage }) => {
   const scrollRef = useRef();
@@ -114,6 +115,20 @@ const ServicesSection = ({ selectedLanguage }) => {
         >
           <i className="fas fa-chevron-right"></i>
         </button>
+        {/* Wave divider at bottom */}
+        <div className="shape-divider-bottom">
+          <svg
+            viewBox="0 0 1440 100"
+            preserveAspectRatio="none"
+            style={{ width: '100%', height: '100px', display: 'block' }}
+          >
+            <path
+              fill="#f9f9f9"
+              d="M0,100 Q720,0 1440,100 L1440,0 L0,0 Z"
+            />
+          </svg>
+        </div>
+
         </div>
       </div>
     </section>
