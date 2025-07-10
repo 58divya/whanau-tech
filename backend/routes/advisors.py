@@ -14,38 +14,38 @@ advisors = [
     {
         "id": 1,
         "name": "Bijeta Niraula",
-        "photo_url": "https://via.placeholder.com/300x200",
+        "photo_url": "/static/pictures/birju.jpg",
         "expertise": "Cybersecurity & Infrastructure"
     },
     {
         "id": 2,
         "name": "Diksha Sharma",
-        "photo_url": "https://via.placeholder.com/300x200",
-        "expertise": "Digital Literacy, Community Training"
+        "photo_url": "/static/pictures/dikchu.jpg",
+        "expertise": "IT Supoort"
     },
     {
         "id": 3,
         "name": "Bhawana Joshi",
         "photo_url": "/static/pictures/vau.jpg",
-        "expertise": "Digital Literacy, Community Training"
+        "expertise": "Digital Education"
     },
     {
         "id": 4,
         "name": "Prajwol Lamichhane",
-        "photo_url": "https://via.placeholder.com/300x200",
+        "photo_url": "/static/pictures/bisesh.jpg",
         "expertise": "Digital Literacy, Community Training"
     },
     {
         "id": 5,
         "name": "Utsav Mudbhari",
-        "photo_url": "https://via.placeholder.com/300x200",
-        "expertise": "Digital Literacy, Community Training"
+        "photo_url": "/static/pictures/utsav.jpg",
+        "expertise": "Cloud Solutions"
     },
     {
         "id": 6,
         "name": "Urja Mudbari",
-        "photo_url": "https://via.placeholder.com/300x200",
-        "expertise": "Digital Literacy, Community Training"
+        "photo_url": "/static/pictures/urja.jpg",
+        "expertise": "Custom Software"
     }
 ]
 
@@ -54,6 +54,13 @@ advisors = [
 def get_advisors():
     print("GET /api/advisors called")
     return jsonify(advisors)
+
+@advisors_bp.route('/advisors/<int:advisor_id>', methods=['GET'])
+def get_advisor_by_id(advisor_id):
+    advisor = next((a for a in advisors if a["id"] == advisor_id), None)
+    if advisor is None:
+        return jsonify({"error": "Advisor not found"}), 404
+    return jsonify(advisor)
 
 # Endpoint: Book an appointment
 @advisors_bp.route('/book', methods=['POST'])
