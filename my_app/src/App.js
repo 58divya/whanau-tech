@@ -15,6 +15,7 @@ import AboutSection from './components/AboutSection';
 import AppNavbar from './components/AppNavbar';
 import translations from './components/translations';
 import TestimonialSection from './components/TestimonialSection';
+import AdvisorProfile from "./components/AdvisorProfile";
 // Import Technology Consultation page component
 import TechnologyConsultationLanding from './components/tech/TechnologyConsultation'; // Adjust path as needed
 import DigitalEducation from './components/tech/DigitalEducation';
@@ -188,6 +189,13 @@ function App() {
               </>
             }
           />
+          <Route
+           path="/advisors" 
+           element={
+           <AdvisorList selectedLanguage="en" />} />
+          <Route 
+          path="/advisor/:id" element={<AdvisorProfile />} />
+          {/* <Route path="/book/:id" element={<BookingPage />} /> */}
 
         </Routes>
       </div>
