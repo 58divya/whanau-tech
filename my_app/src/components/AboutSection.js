@@ -6,7 +6,7 @@ function AboutSection({ selectedLanguage }) {
   const t = translations[selectedLanguage].about;
 
   return (
-    <section id="about" className="about-section py-5" style={{ backgroundColor: '#e6f2ff' }}>
+    <section id="about" className="about-section py-5" style={{ backgroundColor: "#ffffff", padding: "4rem 2rem" }}>
       <div className="container">
         <div className="row align-items-center">
 
