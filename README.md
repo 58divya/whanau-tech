@@ -51,27 +51,36 @@ whanautech/
 └── README.md
 
 ## Setup Instructions
-## 🚀 Getting Started
+### 🚀 Getting Started
 
 ### 1. Clone the Repository
 git clone https://github.com/58divya/whanautech.git
+
 cd whanautech
 
 ### 2. Backend Setup (Flask)
 cd backend
+
 python3 -m venv venv
+
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+
 pip install -r requirements.txt
 
-## Create .env file:
-FLASK_APP=app.py
-FLASK_ENV=development
-SECRET_KEY=your-secret-key
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-email-password
-JWT_SECRET_KEY=your-jwt-secret
+### Create .env file:
+REACT_APP_API_URL=http://127.0.0.1:5000
 
-## Run the backend:
+GENERATE_SOURCEMAP=false
+
+MAIL_USERNAME=your-real-gmail@gmail.com
+
+MAIL_PASSWORD=your-app-password
+
+MAIL_DEFAULT_SENDER=your-real-gmail@gmail.com
+
+TOGETHER_API_KEY="50613d85826ffb37f14653c49164d8f54639b0f16cf5fe39c99b5ae31fbc9b94"
+
+### Run the backend:
 flask run
 
 ### 3. Frontend Setup (React)
