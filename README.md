@@ -39,15 +39,11 @@ whanautech/
 │ ├── routes/
 │ ├── templates/
 │ └── static/
-├── frontend/ # React frontend
+├── my_app/ # React frontend
 │ ├── public/
 │ └── src/
-│ ├── components/
-│ ├── pages/
-│ ├── chatbot/
-│ ├── assets/
-│ └── App.js
-├── picture/ # Static images (e.g., testimonials, advisor photos)
+│ |├── components/
+| |├── picture/ # Static images (e.g., testimonials, advisor photos)
 └── README.md
 
 ## Setup Instructions
