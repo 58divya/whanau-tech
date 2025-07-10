@@ -66,46 +66,46 @@ function ContactForm() {
           <div className="card-body">
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label htmlFor="name" className="form-label">Ingoa (Name)</label>
+                <label htmlFor="name" className="form-label">Name</label>
                 <input
                   type="text"
                   className="form-control"
                   id="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Tō Ingoa"
+                  placeholder="Your Name"
                   required
                   aria-required="true"
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="email" className="form-label">Īmēra (Email)</label>
+                <label htmlFor="email" className="form-label">Email</label>
                 <input
                   type="email"
                   className="form-control"
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="Tō Īmēra"
+                  placeholder="Your Email"
                   required
                   aria-required="true"
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="message" className="form-label">Kōrero (Message)</label>
+                <label htmlFor="message" className="form-label">Message</label>
                 <textarea
                   className="form-control"
                   id="message"
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Tō Karere"
+                  placeholder="Your message"
                   rows="5"
                   required
                   aria-required="true"
                 />
               </div>
               <button type="submit" className="btn btn-primary w-100" disabled={isSubmitting}>
-                {isSubmitting ? 'Sending...' : 'Tukuna (Send)'}
+                {isSubmitting ? 'Sending...' : 'Send'}
               </button>
             </form>
             {status.message && (

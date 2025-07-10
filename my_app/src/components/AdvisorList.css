@@ -1,0 +1,73 @@
+/* src/components/AdvisorSection.css */
+.advisor-carousel {
+  max-width: 900px;
+  margin: 0 auto;
+  gap: 2rem;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.advisor-text h3 {
+  color: #004466;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.advisor-expertise {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.advisor-photo {
+  max-width: 280px;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.nav-button {
+  background: #004466;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  padding: 0.3rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav-button:hover,
+.nav-button:focus {
+  background-color: #00334d;
+  outline: none;
+}
+
+.advisor-carousel-dots .dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-color: #bbb;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.advisor-carousel-dots .dot.active {
+  background-color: #004466;
+}
+
+.advisor-carousel-dots .dot:hover,
+.advisor-carousel-dots .dot:focus {
+  background-color: #00334d;
+  outline: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

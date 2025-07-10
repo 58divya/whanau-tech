@@ -4,23 +4,27 @@ import './App.css';
 import "react-datepicker/dist/react-datepicker.css";
 
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import AdvisorList from './components/AdvisorList';
-import AdvisorSection from './components/AdvisorSection';
-import ContactForm from './ContactSection';
+import ContactForm from './components/ContactSection';
 import HeroSection from './components/HeroSection';
 import ServiceSection from './components/ServiceSection';
 import Chatbot from './components/Chatbot';
 import AboutSection from './components/AboutSection';
-import Login from './components/Login';
-import Register from './components/Register';
-import ForgotPassword from './components/ForgotPassword';
-
+import AppNavbar from './components/AppNavbar';
+import translations from './components/translations';
+import TestimonialSection from './components/TestimonialSection';
+// Import Technology Consultation page component
+import TechnologyConsultationLanding from './components/tech/TechnologyConsultation'; // Adjust path as needed
+import DigitalEducation from './components/tech/DigitalEducation';
+import ITSupport from './components/tech/ITSupports';
+import CybersecurityGuidance from './components/tech/CybersecurityGuidance';
+import CloudSolutions from './components/tech/CloudSolutions';
+import CustomSoftware from './components/tech/CustomSoftware';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
 
   useEffect(() => {
@@ -37,81 +41,154 @@ function App() {
     localStorage.setItem('dark-mode', !isDarkMode ? 'enabled' : 'disabled');
   };
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleLanguageChange = (event) => {
-    setSelectedLanguage(event.target.value);
+  const handleLanguageChange = (lang) => {
+    setSelectedLanguage(lang);
   };
 
   return (
     <Router>
       <div className="App">
-        {/* Navigation Bar */}
-        <nav className="navbar">
-          <div className="container">
-            <a href="#" className="logo">
-              <img src="logo.png" alt="WhānauTech Logo" />
-            </a>
-            <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-              <li><a href="#home"><i className="fas fa-home"></i> Home</a></li>
-              <li><a href="#services"><i className="fas fa-cogs"></i> Services</a></li>
-              <li><a href="#about"><i className="fas fa-info-circle"></i> About</a></li>
-              <li><a href="#contact"><i className="fas fa-envelope"></i> Contact</a></li>
-            </ul>
-
-            <div className="menu-toggle" onClick={toggleMenu}>
-              <i className="fas fa-bars"></i>
-            </div>
-
-            <div className="language-dropdown">
-              <select onChange={handleLanguageChange} value={selectedLanguage} className="language-select">
-                <option value="en">English</option>
-                <option value="mi">Te Reo Māori</option>
-              </select>
-            </div>
-
-            {/* 👇 Update Buttons to Use React Router's Link */}
-            <div className="auth-buttons">
-              <Link to="/login" className="btn btn-outline-light me-2">Login</Link>
-              <Link to="/register" className="btn btn-primary">Sign Up</Link>
-            </div>
-
-            <div className="dark-mode-toggle" onClick={toggleDarkMode}>
-              <i className={isDarkMode ? "fas fa-moon" : "fas fa-sun"}></i>
-            </div>
-          </div>
-        </nav>
-
-        {/* Routes */}
         <Routes>
           {/* Main Homepage Route */}
-          <Route path="/" element={
-            <>
-              <HeroSection />
-              <ServiceSection />
-              <AdvisorList />
-              <AdvisorSection />
-              <Chatbot />
-              <AboutSection />
-              <section id="contact" className="py-5">
-                <div className="container">
-                  <h2 className="text-center mb-5">Whakapā Mai</h2>
-                  <div className="section-divider"></div>
-                  <ContactForm />
-                </div>
-              </section>
-              <footer className="bg-dark text-white text-center py-3">
-                <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
-              </footer>
-            </>
-          } />
+          <Route
+            path="/"
+            element={
+              <>
+                <AppNavbar
+                  isDarkMode={isDarkMode}
+                  toggleDarkMode={toggleDarkMode}
+                  selectedLanguage={selectedLanguage}
+                  handleLanguageChange={handleLanguageChange}
+                  translations={translations[selectedLanguage]}
+                />
+                <HeroSection selectedLanguage={selectedLanguage} />
+                <ServiceSection selectedLanguage={selectedLanguage} />
+                <AdvisorList selectedLanguage={selectedLanguage} />
+                <Chatbot selectedLanguage={selectedLanguage} />
+                <AboutSection selectedLanguage={selectedLanguage} />
+                <TestimonialSection selectedLanguage={selectedLanguage} />
+                <ContactForm selectedLanguage={selectedLanguage} />
+                <footer className="bg-dark text-white text-center py-3">
+                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
+                </footer>
+              </>
+            }
+          />
 
-          {/* Login and Register Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          {/* Technology Consultation Route */}
+          <Route
+            path="/technology-consultation"
+            element={
+              <>
+                <AppNavbar
+                  isDarkMode={isDarkMode}
+                  toggleDarkMode={toggleDarkMode}
+                  selectedLanguage={selectedLanguage}
+                  handleLanguageChange={handleLanguageChange}
+                  translations={translations[selectedLanguage]}
+                />
+                <TechnologyConsultationLanding />
+                <footer className="bg-dark text-white text-center py-3">
+                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
+                </footer>
+              </>
+            }
+          />
+           <Route
+            path="/digital-education"
+            element={
+              <>
+                <AppNavbar
+                  isDarkMode={isDarkMode}
+                  toggleDarkMode={toggleDarkMode}
+                  selectedLanguage={selectedLanguage}
+                  handleLanguageChange={handleLanguageChange}
+                  translations={translations[selectedLanguage]}
+                />
+                <DigitalEducation />
+                <footer className="bg-dark text-white text-center py-3">
+                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
+                </footer>
+              </>
+            }
+          />
+
+          <Route
+            path="/it-support"
+            element={
+              <>
+                <AppNavbar
+                  isDarkMode={isDarkMode}
+                  toggleDarkMode={toggleDarkMode}
+                  selectedLanguage={selectedLanguage}
+                  handleLanguageChange={handleLanguageChange}
+                  translations={translations[selectedLanguage]}
+                />
+                <ITSupport />
+                <footer className="bg-dark text-white text-center py-3">
+                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
+                </footer>
+              </>
+            }
+          />
+
+          <Route
+            path="/cybersecurity-guidance"
+            element={
+              <>
+                <AppNavbar
+                  isDarkMode={isDarkMode}
+                  toggleDarkMode={toggleDarkMode}
+                  selectedLanguage={selectedLanguage}
+                  handleLanguageChange={handleLanguageChange}
+                  translations={translations[selectedLanguage]}
+                />
+                <CybersecurityGuidance />
+                <footer className="bg-dark text-white text-center py-3">
+                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
+                </footer>
+              </>
+            }
+          />
+
+          <Route
+            path="/cloud-solutions"
+            element={
+              <>
+                <AppNavbar
+                  isDarkMode={isDarkMode}
+                  toggleDarkMode={toggleDarkMode}
+                  selectedLanguage={selectedLanguage}
+                  handleLanguageChange={handleLanguageChange}
+                  translations={translations[selectedLanguage]}
+                />
+                <CloudSolutions />
+                <footer className="bg-dark text-white text-center py-3">
+                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
+                </footer>
+              </>
+            }
+          />
+
+          <Route
+            path="/custom-software"
+            element={
+              <>
+                <AppNavbar
+                  isDarkMode={isDarkMode}
+                  toggleDarkMode={toggleDarkMode}
+                  selectedLanguage={selectedLanguage}
+                  handleLanguageChange={handleLanguageChange}
+                  translations={translations[selectedLanguage]}
+                />
+                <CustomSoftware />
+                <footer className="bg-dark text-white text-center py-3">
+                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
+                </footer>
+              </>
+            }
+          />
+
         </Routes>
       </div>
     </Router>

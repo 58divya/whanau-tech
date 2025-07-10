@@ -1,0 +1,52 @@
+:root {
+  --pounamu-green: #2E8B57;
+  --moana-blue: #1E6091;
+  --kowhai-yellow: #FFC107;
+  --hangi-brown: #8B4513;
+  --black: #000000;
+  --white: #FFFFFF;
+}
+
+.tech-consultation-page {
+  padding: 2rem;
+  color: var(--black);
+  background-color: var(--white);
+}
+
+.hero-section, .services-section, .why-section, .how-section, .cta-section, .testimonial-section {
+  margin-bottom: 3rem;
+}
+
+h1, h2 {
+  color: var(--pounamu-green);
+  margin-bottom: 1rem;
+}
+
+ul li, ol li {
+  margin: 0.5rem 0;
+}
+
+.btn-primary {
+  background-color: var(--moana-blue);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 1rem;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+  background-color: #155a7a; /* Slightly darker shade of --moana-blue */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+blockquote {
+  font-style: italic;
+  border-left: 4px solid var(--kowhai-yellow);
+  padding-left: 1rem;
+  color: var(--hangi-brown);
+}
