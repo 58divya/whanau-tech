@@ -82,7 +82,7 @@ def book_appointment():
             advisor_name=advisor_name,
             user_name=user_name,
             user_email=user_email,
-            datetime=dt,
+            datetime =dt,
             date=dt.strftime('%Y-%m-%d'),
             time=dt.strftime('%H:%M')
         )
@@ -90,6 +90,7 @@ def book_appointment():
         db.session.commit()
     except Exception as e:
         db.session.rollback()
+        print(f"Booking Error: {e}")   
         return jsonify({"error": "Database error. Please try again later."}), 500
 
     # Send confirmation email
