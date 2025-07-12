@@ -1,0 +1,62 @@
+/* Slant dividers */
+.slant-divider-top,
+.slant-divider-bottom {
+  position: absolute;
+  width: 100%;
+  height: 60px;
+  left: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.slant-divider-top {
+  top: 0;
+}
+
+.slant-divider-bottom {
+  bottom: 0;
+  transform: rotate(180deg);
+}
+
+/* Blob wrapper & image */
+.blob-wrapper {
+  width: 180px;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 45% 55% 60% 40% / 55% 40% 60% 45%; /* blob shape */
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  margin: 0 auto;
+  position: relative;
+}
+
+.blob-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.blob-image:hover {
+  transform: scale(1.05);
+}
+
+/* Card */
+.advisor-card {
+  max-width: 220px;
+}
+
+/* Button */
+.advisor-card button.btn-primary {
+  background-color: #004466;
+  border: none;
+  font-weight: 600;
+}
+
+.advisor-card button.btn-primary:hover,
+.advisor-card button.btn-primary:focus {
+  background-color: #002933;
+  outline: none;
+}

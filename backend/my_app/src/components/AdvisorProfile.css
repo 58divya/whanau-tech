@@ -1,0 +1,88 @@
+.advisor-detail-full {
+  width: 100%;
+  padding: 3rem 5vw;
+  background-color: #f7fbff;
+  min-height: 100vh;
+}
+
+.advisor-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.advisor-image-section {
+  text-align: center;
+}
+
+.advisor-image {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  object-fit: cover;
+  border: none;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.advisor-image-section h3 {
+  margin-bottom: 0.5rem;
+  color: #004466;
+}
+
+.expertise {
+  font-style: italic;
+  color: #555;
+}
+
+.advisor-content-section h4 {
+  margin-bottom: 1rem;
+  color: #003344;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.btn-book {
+  padding: 0.6rem 1.2rem;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-book:hover {
+  background-color: #0056b3;
+}
+
+.booking-message {
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #006600;
+}
+
+@media (max-width: 768px) {
+  .advisor-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .advisor-image {
+    margin: 0 auto;
+  }
+
+  .advisor-content-section {
+    text-align: left;
+  }
+}
