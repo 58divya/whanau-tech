@@ -4,13 +4,21 @@ from routes.contact import contact_bp
 from routes.advisors import advisors_bp
 from routes.chatbot import chatbot_bp
 from flask_cors import CORS
+from config import Config 
+
+
 
 def create_app():
     app = Flask(__name__, static_folder='static')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = 'your_secret_key'
-    app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
+    # ✅ Load all config (including from .env)
+    app.config.from_object(Config)
+    import os
+    print("Using DB file at:", os.path.abspath(app.config['SQLALCHEMY_DATABASE_URI'].replace('sqlite:///', '')))
+
+    #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # app.config['SECRET_KEY'] = 'your_secret_key'
+    # app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
 
     # Allow React frontend origins to access /api/*
     CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]}}, supports_credentials=True)
