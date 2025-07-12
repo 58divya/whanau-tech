@@ -1,17 +1,17 @@
 from flask import Flask, request, Response, Blueprint
 from together import Together
 
-#Creating a Blueprint
+# Creating a Blueprint
 chatbot_bp = Blueprint("chatbot", __name__)
 
-# 🔐 Add your actual Together.ai API key here
+# 🔐 Use your actual Together API key
 client = Together(api_key="50613d85826ffb37f14653c49164d8f54639b0f16cf5fe39c99b5ae31fbc9b94")
 
 @chatbot_bp.route('/api/chat-stream', methods=['POST'])
 def chat_stream():
     data = request.get_json()
     user_message = data.get("message")
-    print(" User message received:", user_message)
+    print("User message received:", user_message)
 
     system_prompt = ("""
                      GENERAL / SMALL TALK
@@ -65,7 +65,7 @@ def chat_stream():
     def generate():
         try:
             response = client.chat.completions.create(
-                model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+                model="meta-llama/Llama-Vision-Free",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_message}
@@ -80,7 +80,7 @@ def chat_stream():
                     if hasattr(delta, "content") and delta.content is not None:
                         yield delta.content
         except Exception as e:
-            print(" Backend error:", e)
+            print("Backend error:", e)
             yield "\n[Sorry, there was an error generating a response.]"
 
     return Response(generate(), content_type='text/plain')
