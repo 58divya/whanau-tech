@@ -26,7 +26,6 @@ function AppNavbar({
     e.preventDefault();
 
     if (location.pathname === '/') {
-      // Already on homepage, just scroll
       scrollToSection(sectionId);
     } else {
       // Navigate to homepage, then scroll after a short delay
@@ -55,7 +54,7 @@ function AppNavbar({
         {['home', 'services', 'about', 'contact'].map((section) => (
           <li key={section} className="nav-item me-4">
             <a
-              href={`#${section}`}
+              href={`#${section}`} 
               className="nav-link"
               onClick={(e) => handleNavClick(e, section)}
             >

@@ -1,8 +1,0 @@
-.shape-divider-bottom {
-  position: relative;
-  width: 100%;
-  height: 100px;
-  margin-top: -2rem; /* adjust so arc overlaps next section nicely */
-  pointer-events: none;
-  z-index: 1;
-}

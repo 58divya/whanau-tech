@@ -1,42 +1,43 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import translations from './translations'; // Adjust if needed
-import '../App.css';
-import './Service.css';
+import translations from './translations'; // Adjust as needed
 
 const ServicesSection = ({ selectedLanguage }) => {
-  const scrollRef = useRef();
-  const [isHovered, setIsHovered] = useState(false); // Track hover
+  const scrollRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
 
-  // Handle both mouse and touch interactions
+  // Pause scrolling when hovered or touched
   const handlePause = () => setIsHovered(true);
   const handleResume = () => setIsHovered(false);
 
-  // Manual scroll buttons
   const scrollLeft = () => {
-    scrollRef.current?.scrollBy({ left: -300, behavior: 'smooth' });
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
   };
 
   const scrollRight = () => {
-    scrollRef.current?.scrollBy({ left: 300, behavior: 'smooth' });
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
   };
 
-  // 🔄 Auto-scroll effect
   useEffect(() => {
     const interval = setInterval(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
-
-        // Optional: loop back to start if near end
+      if (scrollRef.current && !isHovered) {
         const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+
+        if (scrollLeft + clientWidth >= scrollWidth - 5) {
+          // Loop back to start smoothly
           scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
         }
       }
-    }, 2000); // Auto-scroll every 2 seconds
+    }, 2000);
 
-    return () => clearInterval(interval); // Clean up on unmount
-  }, [isHovered]); // Runs again if hover changes
+    return () => clearInterval(interval);
+  }, [isHovered]);
 
   const serviceLinks = [
     '/technology-consultation',
@@ -44,106 +45,103 @@ const ServicesSection = ({ selectedLanguage }) => {
     '/it-support',
     '/cybersecurity-guidance',
     '/cloud-solutions',
-    '/custom-software'
+    '/custom-software',
   ];
 
   const services = translations[selectedLanguage]?.services?.items || [];
   const sectionTitle = translations[selectedLanguage]?.services?.title || 'Our Services';
 
   return (
-    <section id="services" className="py-5 services-section" role="region" aria-labelledby="services-title" style={{ backgroundColor: '#e6f2ff',
-      color: '#004466'
-    }}>
+    <section
+      id="services"
+      className="py-5 services-section"
+      role="region"
+      aria-labelledby="services-title"
+    >
       <div className="container my-5">
-        <h2 id="services-title" className="text-center mb-4" style={{color: '#004466'}}>{sectionTitle}</h2>
+        <h2 id="services-title" className="text-center mb-4">
+          {sectionTitle}
+        </h2>
 
         <div className="position-relative">
           {/* Left Scroll Button */}
-          {/* Left Button */}
           <button
             className="scroll-button scroll-button-left"
             onClick={scrollLeft}
             aria-label="Scroll services left"
             type="button"
           >
-            <i className="fas fa-chevron-left"></i>
+            <i className="fas fa-chevron-left" aria-hidden="true"></i>
           </button>
-          {/* Scrollable Container */}
+
+          {/* Scrollable container */}
           <div
             ref={scrollRef}
-            className="scroll-container d-flex overflow-auto px-3"
+            className="scroll-container d-flex overflow-auto px-2"
             style={{ scrollBehavior: 'smooth', gap: '1rem' }}
             tabIndex={0}
-           onMouseEnter={handlePause}
-          onMouseLeave={handleResume}
-          onTouchStart={handlePause}
-          onTouchEnd={handleResume}
-          onTouchCancel={handleResume}
+            onMouseEnter={handlePause}
+            onMouseLeave={handleResume}
+            onTouchStart={handlePause}
+            onTouchEnd={handleResume}
+            onTouchCancel={handleResume}
           >
             {services.map((service, index) => (
               <Link
                 to={serviceLinks[index] || '#'}
                 key={index}
                 className="card flex-shrink-0 text-decoration-none text-dark service-card animated-gradient-bg"
-                style={{
-                  color: '#ffffff',
-                  width: '300px',
-                  height: '100px',
-                  minWidth: '300px',
-                  maxWidth: '320px',
-                  margin: '0 0.5rem',
-                  textAlign: 'center',
-                  padding: '1rem',
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-                }}
+                aria-label={`${service.title} service`}
               >
                 <div className="card-body d-flex flex-column justify-content-center align-items-center">
-                  <i className={`fas ${getServiceIcon(index)} fa-2x mb-3`} style={{ color: '#ffffff' }}></i>
+                  <i
+                    className={`fas ${getServiceIcon(index)} fa-2x mb-3`}
+                    style={{ color: '#ffffff' }}
+                    aria-hidden="true"
+                  ></i>
                   <h5 className="card-title mb-2">{service.title}</h5>
-                  <p className="card-text" style={{ fontSize: '0.9rem' }}>{service.description}</p>
+                  <p className="card-text" style={{ fontSize: '0.9rem' }}>
+                    {service.description}
+                  </p>
                 </div>
               </Link>
             ))}
           </div>
 
           {/* Right Scroll Button */}
-            <button
-          className="scroll-button scroll-button-right"
-          onClick={scrollRight}
-          aria-label="Scroll services right"
-          type="button"
-        >
-          <i className="fas fa-chevron-right"></i>
-        </button>
-        {/* Wave divider at bottom */}
-        <div className="shape-divider-bottom">
-          <svg
-            viewBox="0 0 1440 100"
-            preserveAspectRatio="none"
-            style={{ width: '100%', height: '100px', display: 'block' }}
+          <button
+            className="scroll-button scroll-button-right"
+            onClick={scrollRight}
+            aria-label="Scroll services right"
+            type="button"
           >
-            <path
-              fill="#f9f9f9"
-              d="M0,100 Q720,0 1440,100 L1440,0 L0,0 Z"
-            />
-          </svg>
-        </div>
+            <i className="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
 
+          {/* Wave divider at bottom */}
+          <div className="shape-divider-bottom" aria-hidden="true">
+            <svg
+              viewBox="0 0 1440 100"
+              preserveAspectRatio="none"
+              style={{ width: '100%', height: '100px', display: 'block' }}
+            >
+              <path fill="#f9f9f9" d="M0,100 Q720,0 1440,100 L1440,0 L0,0 Z" />
+            </svg>
+          </div>
         </div>
       </div>
     </section>
   );
 };
 
-// Font Awesome icons
 const getServiceIcon = (index) => {
   const icons = [
-    'fa-lightbulb',     // Technology Consultation
-    'fa-book-open',     // Digital Education
-    'fa-laptop-code',   // IT Support
-    'fa-shield-alt',    // Cybersecurity Guidance
-    'fa-cloud',         // Cloud Solutions
-    'fa-code'           // Custom Software
+    'fa-lightbulb', // Technology Consultation
+    'fa-book-open', // Digital Education
+    'fa-laptop-code', // IT Support
+    'fa-shield-alt', // Cybersecurity Guidance
+    'fa-cloud', // Cloud Solutions
+    'fa-code', // Custom Software
   ];
   return icons[index % icons.length] || 'fa-cogs';
 };

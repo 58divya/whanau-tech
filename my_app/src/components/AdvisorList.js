@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // ✅ Add this
 import translations from "./translations";
-import "./AdvisorList.css";
 
 function AdvisorList({ selectedLanguage }) {
   const [advisors, setAdvisors] = useState([]);
@@ -16,13 +15,7 @@ function AdvisorList({ selectedLanguage }) {
   }, []);
 
   return (
-    <section id="advisor-section" className="advisor-section position-relative py-5" style={{ backgroundColor: '#e6f2ff' }}>
-      
-      <div className="slant-divider-top">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-          <polygon fill="#e6f2ff" points="0,100 100,0 100,100" />
-        </svg>
-      </div>
+    <section id="advisor-section" className="advisor-section position-relative py-5">
 
       <div className="container">
         <h2 className="mb-5" style={{ color: '#004466', textAlign: 'center' }}>{t.title}</h2>
@@ -52,12 +45,6 @@ function AdvisorList({ selectedLanguage }) {
             </div>
           ))}
         </div>
-      </div>
-
-      <div className="slant-divider-bottom">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-          <polygon fill="#e6f2ff" points="0,0 100,100 0,100" />
-        </svg>
       </div>
 
     </section>

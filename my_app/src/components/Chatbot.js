@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import translations from './translations'; // adjust path if needed
-import './Chatbot.css';
 
 function Chatbot({ selectedLanguage = 'en' }) {
   const t = translations[selectedLanguage]?.chatbot || translations.en.chatbot;
@@ -115,16 +114,6 @@ function Chatbot({ selectedLanguage = 'en' }) {
             </div>
           )}
           <div>
-            <button
-              onClick={() => {
-                setIsMinimized(!isMinimized);
-                if (isMinimized) inputRef.current?.focus();
-              }}
-              className="chatbot-minimize-button"
-              title={isMinimized ? 'Maximize' : 'Minimize'}
-            >
-              {isMinimized ? '⬆️' : '⬇️'}
-            </button>
             <button
               onClick={() => setIsOpen(false)}
               className="chatbot-close-button"

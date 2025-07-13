@@ -40,7 +40,7 @@ function HeroSection() {
 
   return (
     <section 
-      id="home text" 
+      id="home" 
       className="hero-section d-flex align-items-center  text-white"
     >
       <div className="container">

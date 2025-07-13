@@ -3,17 +3,20 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import './AdvisorProfile.css';
+import translations from './translations';
 
-function AdvisorProfile() {
+function AdvisorProfile({ selectedLanguage }) {
   const { id } = useParams();
   const [advisor, setAdvisor] = useState(null);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());  // initial date = now
   const [time, setTime] = useState('');
   const [bookedTimes, setBookedTimes] = useState([]);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [message, setMessage] = useState('');
+
+  const t = translations[selectedLanguage]?.advisorProfile || translations.en.advisorProfile;
+  console.log("Language:", selectedLanguage, "Loaded strings:", t);
 
   useEffect(() => {
     axios.get(`http://127.0.0.1:5000/api/advisors/${id}`)
@@ -22,8 +25,9 @@ function AdvisorProfile() {
   }, [id]);
 
   useEffect(() => {
+    if (!date) return; // <-- safety check to prevent error if date is null
     const formattedDate = date.toISOString().split('T')[0];
-    axios.get(`http://127.0.0.1:5000/api/booked_slots`, {
+    axios.get('http://127.0.0.1:5000/api/booked_slots', {
       params: { date: formattedDate, advisor_id: id }
     })
       .then(res => setBookedTimes(res.data.booked_times))
@@ -32,7 +36,12 @@ function AdvisorProfile() {
 
   const handleBooking = async () => {
     if (!userName || !userEmail || !time) {
-      setMessage("❗ Please fill all fields.");
+      setMessage(t.fillAll);
+      return;
+    }
+
+    if (!date) {
+      setMessage(t.selectDate); // Add a string like "Please select a date"
       return;
     }
 
@@ -46,18 +55,17 @@ function AdvisorProfile() {
         user_email: userEmail,
         datetime: dateTimeStr,
       });
-      setMessage(`✅ ${res.data.message}`);
+      setMessage(t.success);
     } catch (err) {
-      setMessage("❌ Failed to book appointment. Please try again.");
+      setMessage(t.error);
     }
   };
 
-  if (!advisor) return <div className="container my-5 text-center">Loading advisor info...</div>;
+  if (!advisor) return <div className="container my-5 text-center">{t.loading}</div>;
 
   return (
     <div className="advisor-detail-full">
       <div className="advisor-grid">
-        {/* LEFT: Image */}
         <div className="advisor-image-section">
           <img
             src={advisor.photo_url.startsWith('http')
@@ -70,23 +78,22 @@ function AdvisorProfile() {
           <p className="expertise">{advisor.expertise}</p>
         </div>
 
-        {/* RIGHT: Info + Booking */}
         <div className="advisor-content-section">
-          <h4>About</h4>
-          <p>{advisor.bio || "No biography available at the moment."}</p>
+          <h4>{t.about}</h4>
+          <p>{advisor.bio || t.noBio}</p>
 
-          <h4 className="mt-4">Book an Appointment</h4>
+          <h4 className="mt-4">{t.bookAppointment}</h4>
           <div className="booking-form">
             <input
               type="text"
-              placeholder="Your Name"
+              placeholder={t.namePlaceholder}
               className="form-input"
               value={userName}
               onChange={e => setUserName(e.target.value)}
             />
             <input
               type="email"
-              placeholder="Your Email"
+              placeholder={t.emailPlaceholder}
               className="form-input"
               value={userEmail}
               onChange={e => setUserEmail(e.target.value)}
@@ -94,6 +101,7 @@ function AdvisorProfile() {
             <DatePicker
               selected={date}
               onChange={setDate}
+              placeholderText={t.datePlaceholder || "Select your date"}
               dateFormat="yyyy-MM-dd"
               className="form-input"
             />
@@ -102,7 +110,7 @@ function AdvisorProfile() {
               value={time}
               onChange={e => setTime(e.target.value)}
             >
-              <option value="">Select Time</option>
+              <option value="">{t.selectTime}</option>
               {["09:00", "10:00", "11:00", "13:00", "14:00", "15:00"].map(slot => (
                 <option key={slot} value={slot} disabled={bookedTimes.includes(slot)}>
                   {slot} {bookedTimes.includes(slot) ? "(Booked)" : ""}
@@ -111,7 +119,7 @@ function AdvisorProfile() {
             </select>
 
             <button className="btn-book" onClick={handleBooking}>
-              Confirm Booking
+              {t.confirm}
             </button>
 
             {message && <p className="booking-message">{message}</p>}
@@ -121,4 +129,5 @@ function AdvisorProfile() {
     </div>
   );
 }
+
 export default AdvisorProfile;

@@ -16,8 +16,8 @@ import AppNavbar from './components/AppNavbar';
 import translations from './components/translations';
 import TestimonialSection from './components/TestimonialSection';
 import AdvisorProfile from "./components/AdvisorProfile";
-// Import Technology Consultation page component
-import TechnologyConsultationLanding from './components/tech/TechnologyConsultation'; // Adjust path as needed
+// Import Technology Consultation page components
+import TechnologyConsultationLanding from './components/tech/TechnologyConsultation';
 import DigitalEducation from './components/tech/DigitalEducation';
 import ITSupport from './components/tech/ITSupports';
 import CybersecurityGuidance from './components/tech/CybersecurityGuidance';
@@ -49,19 +49,20 @@ function App() {
   return (
     <Router>
       <div className="App">
+        {/* Navbar outside Routes so it shows on all pages */}
+        <AppNavbar
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleDarkMode}
+          selectedLanguage={selectedLanguage}
+          handleLanguageChange={handleLanguageChange}
+          translations={translations[selectedLanguage]}
+        />
+
         <Routes>
-          {/* Main Homepage Route */}
           <Route
             path="/"
             element={
               <>
-                <AppNavbar
-                  isDarkMode={isDarkMode}
-                  toggleDarkMode={toggleDarkMode}
-                  selectedLanguage={selectedLanguage}
-                  handleLanguageChange={handleLanguageChange}
-                  translations={translations[selectedLanguage]}
-                />
                 <HeroSection selectedLanguage={selectedLanguage} />
                 <ServiceSection selectedLanguage={selectedLanguage} />
                 <AdvisorList selectedLanguage={selectedLanguage} />
@@ -69,135 +70,24 @@ function App() {
                 <AboutSection selectedLanguage={selectedLanguage} />
                 <TestimonialSection selectedLanguage={selectedLanguage} />
                 <ContactForm selectedLanguage={selectedLanguage} />
-                <footer className="bg-dark text-white text-center py-3">
-                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
-                </footer>
               </>
             }
           />
 
-          {/* Technology Consultation Route */}
-          <Route
-            path="/technology-consultation"
-            element={
-              <>
-                <AppNavbar
-                  isDarkMode={isDarkMode}
-                  toggleDarkMode={toggleDarkMode}
-                  selectedLanguage={selectedLanguage}
-                  handleLanguageChange={handleLanguageChange}
-                  translations={translations[selectedLanguage]}
-                />
-                <TechnologyConsultationLanding />
-                <footer className="bg-dark text-white text-center py-3">
-                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
-                </footer>
-              </>
-            }
-          />
-           <Route
-            path="/digital-education"
-            element={
-              <>
-                <AppNavbar
-                  isDarkMode={isDarkMode}
-                  toggleDarkMode={toggleDarkMode}
-                  selectedLanguage={selectedLanguage}
-                  handleLanguageChange={handleLanguageChange}
-                  translations={translations[selectedLanguage]}
-                />
-                <DigitalEducation />
-                <footer className="bg-dark text-white text-center py-3">
-                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
-                </footer>
-              </>
-            }
-          />
-
-          <Route
-            path="/it-support"
-            element={
-              <>
-                <AppNavbar
-                  isDarkMode={isDarkMode}
-                  toggleDarkMode={toggleDarkMode}
-                  selectedLanguage={selectedLanguage}
-                  handleLanguageChange={handleLanguageChange}
-                  translations={translations[selectedLanguage]}
-                />
-                <ITSupport />
-                <footer className="bg-dark text-white text-center py-3">
-                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
-                </footer>
-              </>
-            }
-          />
-
-          <Route
-            path="/cybersecurity-guidance"
-            element={
-              <>
-                <AppNavbar
-                  isDarkMode={isDarkMode}
-                  toggleDarkMode={toggleDarkMode}
-                  selectedLanguage={selectedLanguage}
-                  handleLanguageChange={handleLanguageChange}
-                  translations={translations[selectedLanguage]}
-                />
-                <CybersecurityGuidance />
-                <footer className="bg-dark text-white text-center py-3">
-                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
-                </footer>
-              </>
-            }
-          />
-
-          <Route
-            path="/cloud-solutions"
-            element={
-              <>
-                <AppNavbar
-                  isDarkMode={isDarkMode}
-                  toggleDarkMode={toggleDarkMode}
-                  selectedLanguage={selectedLanguage}
-                  handleLanguageChange={handleLanguageChange}
-                  translations={translations[selectedLanguage]}
-                />
-                <CloudSolutions />
-                <footer className="bg-dark text-white text-center py-3">
-                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
-                </footer>
-              </>
-            }
-          />
-
-          <Route
-            path="/custom-software"
-            element={
-              <>
-                <AppNavbar
-                  isDarkMode={isDarkMode}
-                  toggleDarkMode={toggleDarkMode}
-                  selectedLanguage={selectedLanguage}
-                  handleLanguageChange={handleLanguageChange}
-                  translations={translations[selectedLanguage]}
-                />
-                <CustomSoftware />
-                <footer className="bg-dark text-white text-center py-3">
-                  <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
-                </footer>
-              </>
-            }
-          />
-          <Route
-           path="/advisors" 
-           element={
-           <AdvisorList selectedLanguage="en" />} />
-          <Route 
-          path="/advisor/:id" element={<AdvisorProfile />} />
-          {/* <Route path="/book/:id" element={<BookingPage />} /> */}
-
+          <Route path="/technology-consultation" element={<TechnologyConsultationLanding selectedLanguage={selectedLanguage} />} />
+          <Route path="/digital-education" element={<DigitalEducation selectedLanguage={selectedLanguage} />} />
+          <Route path="/it-support" element={<ITSupport selectedLanguage={selectedLanguage} />} />
+          <Route path="/cybersecurity-guidance" element={<CybersecurityGuidance selectedLanguage={selectedLanguage} />} />
+          <Route path="/cloud-solutions" element={<CloudSolutions selectedLanguage={selectedLanguage} />} />
+          <Route path="/custom-software" element={<CustomSoftware selectedLanguage={selectedLanguage} />} />
+          <Route path="/advisors" element={<AdvisorList selectedLanguage={selectedLanguage} />} />
+          <Route path="/advisor/:id" element={<AdvisorProfile selectedLanguage={selectedLanguage} />} />
         </Routes>
+
+        {/* Single Footer for all pages */}
+          <footer className="bg-dark text-white text-center py-4 mt-3">
+              <p>&copy; 2025 WhānauTech. Aroha mai, aroha atu.</p>
+          </footer>
       </div>
     </Router>
   );
