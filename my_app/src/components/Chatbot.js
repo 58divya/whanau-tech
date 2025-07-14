@@ -1,163 +1,134 @@
-import React, { useState, useEffect, useRef } from 'react';
-import translations from './translations'; // adjust path if needed
+import React, { useState, useEffect, useRef } from "react";
+import translations from "./translations";
 
-function Chatbot({ selectedLanguage = 'en' }) {
-  const t = translations[selectedLanguage]?.chatbot || translations.en.chatbot;
+function Chatbot({ selectedLanguage = "en" }) {
+	const t = translations[selectedLanguage]?.chatbot || translations.en.chatbot;
 
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(true);       // Chatbot is visible
-  const [isMinimized, setIsMinimized] = useState(true); // But minimized
-  const [showPreview, setShowPreview] = useState(true); // Greeting popup
+	const [messages, setMessages] = useState([{ from: "bot", text: t.greeting }]);
+	const [input, setInput] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [isOpen, setIsOpen] = useState(false); // chatbot starts closed
 
-  const messagesEndRef = useRef(null);
-  const inputRef = useRef(null);
+	const messagesEndRef = useRef(null);
+	const inputRef = useRef(null);
 
-  useEffect(() => {
-    // Add initial greeting message
-    setMessages([{ from: 'bot', text: t.greeting }]);
+	useEffect(() => {
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [messages]);
 
-    // Hide greeting preview after a delay
-    const timer = setTimeout(() => setShowPreview(false), 8000);
-    return () => clearTimeout(timer);
-  }, [t.greeting]);
+	const sendMessage = async () => {
+		if (!input.trim()) return;
+		const userMessage = { from: "user", text: input };
+		setMessages((prev) => [...prev, userMessage]);
+		setInput("");
+		setLoading(true);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+		try {
+			const res = await fetch("http://127.0.0.1:5000/api/chat-stream", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ message: input, lang: selectedLanguage }),
+				mode: "cors",
+			});
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+			if (!res.body) throw new Error("ReadableStream not supported");
 
-    const userMessage = { from: 'user', text: input };
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setLoading(true);
+			const reader = res.body.getReader();
+			const decoder = new TextDecoder();
 
-    try {
-      const res = await fetch('http://127.0.0.1:5000/api/chat-stream', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input, lang: selectedLanguage }),
-        mode: 'cors',
-      });
+			setMessages((prev) => [...prev, { from: "bot", text: "" }]);
 
-      if (!res.body) throw new Error('ReadableStream not supported');
+			let done = false;
+			let accumulatedText = "";
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
+			while (!done) {
+				const { value, done: doneReading } = await reader.read();
+				done = doneReading;
+				if (value) {
+					const chunk = decoder.decode(value);
+					accumulatedText += chunk;
+					setMessages((prev) => {
+						const updated = [...prev];
+						updated[updated.length - 1] = {
+							from: "bot",
+							text: accumulatedText,
+						};
+						return updated;
+					});
+				}
+			}
+		} catch (error) {
+			console.error("❌ Error during fetch:", error);
+			setMessages((prev) => [...prev, { from: "bot", text: t.networkError }]);
+		} finally {
+			setLoading(false);
+		}
+	};
 
-      setMessages(prev => [...prev, { from: 'bot', text: '' }]);
+	const handleKeyDown = (e) => {
+		if (e.key === "Enter" && !loading) sendMessage();
+	};
 
-      let done = false;
-      let accumulatedText = '';
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        if (value) {
-          const chunk = decoder.decode(value);
-          accumulatedText += chunk;
+	return (
+		<>
+			{/* Toggle Button - always visible */}
+			<button
+				className="chatbot-toggle-button"
+				aria-label={isOpen ? "Close chatbot" : "Open chatbot"}
+				onClick={() => {
+					setIsOpen(!isOpen);
+					if (!isOpen) {
+						// When opening, focus input after short delay
+						setTimeout(() => inputRef.current?.focus(), 100);
+					}
+				}}
+			>
+				💬
+			</button>
 
-          setMessages(prev => {
-            const updated = [...prev];
-            updated[updated.length - 1] = { from: 'bot', text: accumulatedText };
-            return updated;
-          });
-        }
-      }
-    } catch (error) {
-      console.error('❌ Error during fetch:', error);
-      setMessages(prev => [...prev, { from: 'bot', text: t.networkError }]);
-    } finally {
-      setLoading(false);
-    }
-  };
+			{/* Chatbot panel - only render if open */}
+			{isOpen && (
+				<div className="chatbot-window open">
+					<div className="chatbot-header">{t.title}</div>
 
-  const handleKeyDown = e => {
-    if (e.key === 'Enter' && !loading) {
-      sendMessage();
-    }
-  };
+					<div className="chatbot-messages">
+						{messages.map((msg, i) => (
+							<div
+								key={i}
+								className={`chatbot-message ${
+									msg.from === "user" ? "user" : "bot"
+								}`}
+							>
+								<span>{msg.text}</span>
+							</div>
+						))}
+						<div ref={messagesEndRef} />
+						{loading && (
+							<p>
+								<em>{t.typing}</em>
+							</p>
+						)}
+					</div>
 
-  return (
-    <div>
-      {/* Toggle Button (when closed) */}
-      {!isOpen && (
-        <button
-          onClick={() => {
-            setIsOpen(true);
-            setIsMinimized(true);
-            inputRef.current?.focus();
-          }}
-          className="chatbot-toggle-button"
-          aria-label="Open chatbot"
-        >
-          💬
-        </button>
-      )}
-
-      {/* Chatbot Panel */}
-      <div
-        className={`chatbot-window ${isOpen ? 'open' : 'closed'} ${isMinimized ? 'minimized' : ''}`}
-        aria-hidden={!isOpen}
-      >
-        <div className="chatbot-header">
-          {t.title}
-          {isMinimized && showPreview && (
-            <div className="chatbot-preview-bubble" onClick={() => {
-              setIsMinimized(false);
-              setShowPreview(false);
-              inputRef.current?.focus();
-            }}>
-              {t.greeting}
-            </div>
-          )}
-          <div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="chatbot-close-button"
-              title="Close"
-            >
-              ✖
-            </button>
-          </div>
-        </div>
-
-        {!isMinimized && (
-          <>
-            <div className="chatbot-messages">
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`chatbot-message ${msg.from === 'user' ? 'user' : 'bot'}`}
-                >
-                  {msg.text}
-                </div>
-              ))}
-              <div ref={messagesEndRef} />
-              {loading && <p><em>{t.typing}</em></p>}
-            </div>
-
-            <div className="chatbot-input-area">
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={t.placeholder}
-                disabled={loading}
-              />
-              <button onClick={sendMessage} disabled={loading}>
-                {t.send}
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
+					<div className="chatbot-input-area">
+						<input
+							ref={inputRef}
+							type="text"
+							value={input}
+							onChange={(e) => setInput(e.target.value)}
+							onKeyDown={handleKeyDown}
+							placeholder={t.placeholder}
+							disabled={loading}
+							autoComplete="off"
+						/>
+						<button onClick={sendMessage} disabled={loading}>
+							{t.send}
+						</button>
+					</div>
+				</div>
+			)}
+		</>
+	);
 }
 
 export default Chatbot;
