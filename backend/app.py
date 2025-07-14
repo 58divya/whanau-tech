@@ -5,6 +5,7 @@ from routes.advisors import advisors_bp
 from routes.chatbot import chatbot_bp
 from flask_cors import CORS
 
+
 def create_app():
     app = Flask(__name__, static_folder='static')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -49,7 +50,9 @@ def create_app():
     return app
 
 
+app = create_app()
+
+
 if __name__ == '__main__':
-    app = create_app()
     print("Starting Flask app...")
     app.run(debug=True)
