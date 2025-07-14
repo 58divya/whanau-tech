@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 load_dotenv()  # loads from .env in root folder
 
 class Config:
+
+    
     SECRET_KEY = os.getenv('SECRET_KEY', 'super-secret')
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///mydatabase.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
