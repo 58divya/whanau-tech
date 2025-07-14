@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: whanau-tech
+    name: whanau tech
     runtime: python
     buildCommand: |
       pip install -r backend/requirements.txt

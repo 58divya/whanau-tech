@@ -14,37 +14,37 @@ advisors = [
     {
         "id": 1,
         "name": "Bijeta Niraula",
-        "photo_url": "/static/pictures/birju.jpg",
+        "photo_url": "/static/images/birju.jpg",
         "expertise": "Cybersecurity & Infrastructure"
     },
     {
         "id": 2,
         "name": "Diksha Sharma",
-        "photo_url": "/static/pictures/dikchu.jpg",
+        "photo_url": "/static/images/dikchu.jpg",
         "expertise": "IT Supoort"
     },
     {
         "id": 3,
         "name": "Bhawana Joshi",
-        "photo_url": "/static/pictures/vau.jpg",
+        "photo_url": "/static/images/vau.jpg",
         "expertise": "Digital Education"
     },
     {
         "id": 4,
         "name": "Prajwol Lamichhane",
-        "photo_url": "/static/pictures/bisesh.jpg",
+        "photo_url": "/static/images/bisesh.jpg",
         "expertise": "Digital Literacy, Community Training"
     },
     {
         "id": 5,
         "name": "Utsav Mudbhari",
-        "photo_url": "/static/pictures/utsav.jpg",
+        "photo_url": "/static/images/utsav.jpg",
         "expertise": "Cloud Solutions"
     },
     {
         "id": 6,
         "name": "Urja Mudbari",
-        "photo_url": "/static/pictures/urja.jpg",
+        "photo_url": "/static/images/urja.jpg",
         "expertise": "Custom Software"
     }
 ]
