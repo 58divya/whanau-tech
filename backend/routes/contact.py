@@ -1,8 +1,8 @@
 """ ------------Contact form endpoint----------------- """
 
 from flask import Blueprint, request, jsonify
-from extensions import db, mail
-from models.models import Contact
+from backend.extensions import db, mail
+from backend.models.models import Contact
 from flask_mail import Message
 from datetime import datetime, timezone
 import os

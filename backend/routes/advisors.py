@@ -1,8 +1,8 @@
 # advisors.py (Flask Blueprint for Advisor Listing and Booking)
 
 from flask import Blueprint, jsonify, request
-from extensions import db, mail
-from models.models import Booking
+from backend.extensions import db, mail
+from backend.models.models import Booking
 from dateutil import parser
 from flask_mail import Message
 
