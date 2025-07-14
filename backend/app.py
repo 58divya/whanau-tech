@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from extensions import db, mail, jwt  
+from .extensions import db, mail, jwt  
 from routes.contact import contact_bp 
 from routes.advisors import advisors_bp
 from routes.chatbot import chatbot_bp
