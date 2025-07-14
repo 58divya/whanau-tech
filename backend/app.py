@@ -1,43 +1,55 @@
 from flask import Flask, jsonify
-from extensions import db, mail, jwt
-from routes.auth_routes import auth_bp  
+from extensions import db, mail, jwt  
 from routes.contact import contact_bp 
+from routes.advisors import advisors_bp
+from routes.chatbot import chatbot_bp
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager
-
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='static')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = 'your_secret_key'
-    app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  # important for JWT
+    app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
 
+    # Allow React frontend origins to access /api/*
     CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]}}, supports_credentials=True)
 
     db.init_app(app)
     mail.init_app(app)
-    jwt.init_app(app)  # initialize the JWTManager instance imported from extensions
+    jwt.init_app(app)
 
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(contact_bp)  
+    # Register blueprints
+    #Blueprint for contact form
+    app.register_blueprint(contact_bp)
+    print("Registered contact_bp")
 
-    def test_cors():
-        return {"message": "CORS is working!"}
-    
+    #Blueprint for advisors
+    app.register_blueprint(advisors_bp)
+    print("Registered advisors_bp")
 
+    #Blueprint for chatbot
+    app.register_blueprint(chatbot_bp)
+    print("Registered chatbot_bp")
 
     with app.app_context():
         db.create_all()
+        print("Database tables created")
 
-    @app.route('/')
-    def home():
-        return jsonify(message="Welcome to WhānauTech backend!")
-    
+    # @app.route('/')
+    # def home():
+    #     return jsonify(message="Welcome to WhānauTech backend!")
 
+    # Simple test route to verify server works
+    @app.route('/test')
+    def test():
+        print("GET /test called")
+        return "Test route is working!"
 
     return app
 
+
 if __name__ == '__main__':
     app = create_app()
+    print("Starting Flask app...")
     app.run(debug=True)

@@ -1,17 +1,47 @@
-import React from "react"
-function AboutSection(){
-    return(
-        <section id="about" className="py-5 bg-dark text-white">
-        <div className="container">
-          <h2 className="text-center mb-5">Mō Mātou</h2>
-          <div className="section-divider"></div>
-          <p className="lead text-center">
-            We are committed to empowering Māori individuals and businesses through technology, guided by the values of manaakitanga, whanaungatanga, and kaitiakitanga. Our mission is to bridge the digital divide and foster innovation in Aotearoa.
-          </p>
-        </div>
-      </section>
+import React from "react";
+import translations from "./translations";
+import aboutImage from "../pictures/about-src.jpg";
 
-    );
+function AboutSection({ selectedLanguage }) {
+	const t = translations[selectedLanguage].about;
 
+	return (
+		<section
+			id="about"
+			className="about-section py-5"
+			style={{ padding: "4rem 2rem" }}
+		>
+			<div className="container">
+				<div className="row align-items-center">
+					{/* Left Text */}
+					<div className="col-md-6">
+						<h2
+							className="mb-4 text-start"
+							style={{ color: "rgb(59, 144, 143)", textAlign: "center" }}
+						>
+							{t.title}
+						</h2>
+						<div className="section-divider mb-3"></div>
+						<p className="lead text-start">{t.description}</p>
+					</div>
+
+					{/* Right Image in Card */}
+					<div className="col-md-6 d-flex justify-content-center">
+						<div
+							className="card shadow-sm"
+							style={{ maxWidth: "100%", border: "none" }}
+						>
+							<img
+								src={aboutImage}
+								alt="About WhānauTech"
+								className="img-fluid rounded"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	);
 }
+
 export default AboutSection;

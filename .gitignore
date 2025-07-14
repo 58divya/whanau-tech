@@ -1,0 +1,34 @@
+# macOS system files
+.DS_Store
+
+# Python / Flask
+__pycache__/
+*.py[cod]
+*.db
+*.sqlite3
+.env
+instance/
+
+# React / Node
+node_modules/
+build/
+dist/
+*.log
+*.pkg
+
+# VS Code
+.vscode/
+
+# Your specific folders
+FINAL/
+Portfolio/
+TASK_1FINALASSIGNMENT_DIVYA/
+Task-1 revised */
+Task-1_Final _ssessment/
+class_assign/
+my-portfolio/
+whanau-tech-feature-fix-bugs/
+wk1/
+wk3/
+wk5/
+wk6/

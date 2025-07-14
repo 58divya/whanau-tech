@@ -1,16 +1,6 @@
 from extensions import db
 from datetime import datetime, timezone
 
-class User(db.Model):
-    __tablename__ ='users'
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(80), nullable=False)
-    last_name = db.Column(db.String(80), nullable=False)
-    dob = db.Column(db.Date, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    phone = db.Column(db.String(20), nullable=False)
-    password = db.Column(db.String(128), nullable=False)
-
 class Contact(db.Model):
     __tablename__ ='contact_records'
     id = db.Column(db.Integer, primary_key=True)
