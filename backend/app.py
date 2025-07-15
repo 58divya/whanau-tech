@@ -22,21 +22,24 @@ def create_app():
     app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
 
     # CORS (adjust for production as needed)
+#     CORS(app, resources={
+#     r"/api/*": {
+#         "origins": [
+#             "http://localhost:3000", 
+#             "https://whanau-tech.onrender.com"
+#         ]
+#     },
+#     r"/static/*": {
+#         "origins": [
+#             "http://localhost:3000", 
+#             "https://whanau-tech.onrender.com"
+#         ]
+#     }
+# }, supports_credentials=True)
     CORS(app, resources={
-    r"/api/*": {
-        "origins": [
-            "http://localhost:3000", 
-            "https://whanau-tech.onrender.com"
-        ]
-    },
-    r"/static/*": {
-        "origins": [
-            "http://localhost:3000", 
-            "https://whanau-tech.onrender.com"
-        ]
-    }
-}, supports_credentials=True)
-
+    r"/api/*": {"origins": "*"},
+    r"/static/*": {"origins": "*"}
+})
 
     # Init extensions
     db.init_app(app)
