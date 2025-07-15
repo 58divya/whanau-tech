@@ -26,6 +26,8 @@ import CloudSolutions from "./components/tech/CloudSolutions";
 import CustomSoftware from "./components/tech/CustomSoftware";
 
 function App() {
+	console.log("REACT_APP_BACKEND_URL:", process.env.REACT_APP_BACKEND_URL);
+
 	const [isDarkMode, setIsDarkMode] = useState(false);
 	const [selectedLanguage, setSelectedLanguage] = useState("en");
 

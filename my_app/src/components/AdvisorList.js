@@ -15,6 +15,7 @@ function AdvisorList({ selectedLanguage }) {
 	const backendURL =
 		process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:5000";
 
+	console.log("Fetching advisors from:", backendURL + "/api/advisors");
 	useEffect(() => {
 		console.log("Fetching advisors from:", `${backendURL}/api/advisors`);
 		axios
