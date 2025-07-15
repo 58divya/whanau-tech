@@ -16,9 +16,13 @@ function AdvisorList({ selectedLanguage }) {
 		process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:5000";
 
 	useEffect(() => {
+		console.log("Fetching advisors from:", `${backendURL}/api/advisors`);
 		axios
 			.get(`${backendURL}/api/advisors`)
-			.then((res) => setAdvisors(res.data))
+			.then((res) => {
+				console.log("Advisors fetched:", res.data);
+				setAdvisors(res.data);
+			})
 			.catch((err) => {
 				console.error("Error fetching advisors:", err);
 				setError("Failed to load advisors.");

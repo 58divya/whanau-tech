@@ -9,7 +9,11 @@ from .routes.chatbot import chatbot_bp
 
 
 def create_app():
-    app = Flask(__name__, static_folder='build', static_url_path='/')
+    app = Flask(
+    __name__,
+    static_folder=os.path.join(os.path.dirname(__file__), 'build'),
+    static_url_path='/'
+    )
 
     # Config
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -18,14 +22,21 @@ def create_app():
     app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
 
     # CORS (adjust for production as needed)
-    CORS(
-        app,
-        resources={
-            r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]},
-            r"/static/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000"]},
-        },
-        supports_credentials=True,
-    )
+    CORS(app, resources={
+    r"/api/*": {
+        "origins": [
+            "http://localhost:3000", 
+            "https://whanau-tech.onrender.com"
+        ]
+    },
+    r"/static/*": {
+        "origins": [
+            "http://localhost:3000", 
+            "https://whanau-tech.onrender.com"
+        ]
+    }
+}, supports_credentials=True)
+
 
     # Init extensions
     db.init_app(app)

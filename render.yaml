@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: whanau tech
+    name: whanau-tech
     runtime: python
     buildCommand: |
       pip install -r backend/requirements.txt
@@ -16,3 +16,5 @@ services:
         value: your_email@example.com
       - key: MAIL_PASSWORD
         value: your_email_password
+      - key: REACT_APP_BACKEND_URL
+        value: https://whanau-tech.onrender.com
