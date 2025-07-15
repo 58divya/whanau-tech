@@ -3,12 +3,12 @@ services:
     name: whanau-tech
     runtime: python
     build:
-      workingDir: backend
+      workingDir: .
     buildCommand: |
       pip install -r requirements.txt
       cd ../my_app && npm install && npm run build
       mv ../my_app/build ./build
-    startCommand: gunicorn wsgi:app
+    startCommand: gunicorn backend.wsgi:app
     envVars:
       - key: SECRET_KEY
         value: R8f3$7kd!LpZ0q2@5mXb9TzY1wQe
