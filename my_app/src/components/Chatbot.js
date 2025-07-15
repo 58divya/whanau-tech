@@ -12,6 +12,9 @@ function Chatbot({ selectedLanguage = "en" }) {
 	const messagesEndRef = useRef(null);
 	const inputRef = useRef(null);
 
+	const backendURL =
+		process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:5000";
+
 	useEffect(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [messages]);
@@ -24,7 +27,7 @@ function Chatbot({ selectedLanguage = "en" }) {
 		setLoading(true);
 
 		try {
-			const res = await fetch("http://127.0.0.1:5000/api/chat-stream", {
+			const res = await fetch(`${backendURL}/api/chat-stream`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ message: input, lang: selectedLanguage }),

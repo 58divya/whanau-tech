@@ -22,7 +22,7 @@ function ContactForm({ selectedLanguage }) {
 		setIsSubmitting(true);
 		setStatus({ message: "", type: "" });
 
-		const apiUrl = process.env.REACT_APP_API_URL || "http://127.0.0.1:5001";
+		const apiUrl = process.env.REACT_APP_API_URL || "http://127.0.0.1:5000";
 
 		try {
 			const response = await fetch(`${apiUrl}/api/contact`, {
