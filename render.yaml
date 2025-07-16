@@ -7,7 +7,9 @@ services:
     buildCommand: |
       pip install -r requirements.txt
       cd ../my_app && npm install && npm run build
-      mv ../my_app/build ./build
+      rm -rf ../backend/build
+      mv ../my_app/build ../backend/build
+
     startCommand: gunicorn wsgi:app
     envVars:
       - key: SECRET_KEY
