@@ -2,11 +2,11 @@ import os
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 
-# Relative imports for your modules and extensions
-from ..extensions import db, mail, jwt
-from .contact import contact_bp
-from .advisors import advisors_bp
-from .chatbot import chatbot_bp
+from extensions import db, mail, jwt
+from app.contact import contact_bp
+from app.advisors import advisors_bp
+from app.chatbot import chatbot_bp
+
 
 
 def create_app():
