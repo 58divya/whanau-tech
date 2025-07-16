@@ -13,6 +13,9 @@ def create_app():
     # Path to React build folder relative to this file
     frontend_path = os.path.join(os.path.dirname(__file__), '..', 'build')
 
+    print("Frontend path:", frontend_path)
+    print("Index exists:", os.path.exists(os.path.join(frontend_path, "index.html")))
+
     app = Flask(
         __name__,
         static_folder=frontend_path,
